@@ -34,9 +34,21 @@ This list will likely contain minor bugs which may or may not be fixed.
 
 ## Screenshots
 
-| <link> |
+| ![ezgif-4-0e4ab45437](https://github.com/Lyall/DMCHDFix/assets/695941/ab35cd0e-3db6-409c-8110-ec28bf3dbbf8) |
 |:--:|
-| Screenshot description. |
+| DMC HD Collection Launcher |
+
+| ![ezgif-4-6dc922d9c9](https://github.com/Lyall/DMCHDFix/assets/695941/d5f68896-c6d1-4905-9f95-819bd8224500) |
+|:--:|
+| DMC 1 |
+
+| ![ezgif-4-40643537c3](https://github.com/Lyall/DMCHDFix/assets/695941/466b2005-5967-4fc9-88e9-852e316223bf) |
+|:--:|
+| DMC 2 |
+
+| ![ezgif-4-72aa490107](https://github.com/Lyall/DMCHDFix/assets/695941/49c1e545-ccfb-4f27-95c7-801a0739040f) |
+|:--:|
+| DMC 3 |
 
 ## Credits
 [Ultimate ASI Loader](https://github.com/ThirteenAG/Ultimate-ASI-Loader) for ASI loading. <br />
