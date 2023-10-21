@@ -8,7 +8,7 @@ This is a fix that aims to add ultrawide support to Devil May Cry HD Collection.
 - Unlocks 1080p resolution limit in the launcher.
 - Corrects gameplay aspect ratio.
 - Scales HUD to 16:9.
-- Correctly scales movies to 16:9.
+- Correctly scales FMVs to 16:9.
 
 ## Installation
 - Grab the latest release of DMCHDFix from [here.](https://github.com/Lyall/DMCHDFix/releases)
@@ -23,6 +23,7 @@ This list will likely contain minor bugs which may or may not be fixed.
 
 ### DMC 1
 - Door opening zoom effect looks janky.
+- Cutscene letterbox does not span screen.
 
 ### DMC 2
 - Targeting reticle is squished (wrong aspect ratio).
