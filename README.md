@@ -31,6 +31,7 @@ This list will likely contain minor bugs which may or may not be fixed.
 ### DMC 3
 - Targeting reticle is misaligned.
 - Combo meter is misaligned.
+- Object pop-in towards the edge of the screen.
 
 ## Screenshots
 
