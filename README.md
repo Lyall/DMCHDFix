@@ -21,6 +21,10 @@ This is a fix that aims to add ultrawide support to Devil May Cry HD Collection.
 Please report any issues you see.
 This list will likely contain minor bugs which may or may not be fixed.
 
+### Launcher
+- Some text is not scaled correctly.
+- HUD scale does not update with resolution changes.
+
 ### DMC 1
 - Door opening zoom effect looks janky.
 - Cutscene letterbox does not span screen.
