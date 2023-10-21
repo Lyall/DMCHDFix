@@ -2,7 +2,7 @@
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/W7W01UAI9)</br>
 [![Github All Releases](https://img.shields.io/github/downloads/Lyall/DMCHDFix/total.svg)](https://github.com/Lyall/DMCHDFix/releases)
 
-This is a work-in-progress fix that aims to add ultrawide support to Devil May Cry HD Collection. 
+This is a work-in-progress fix that aims to add ultrawide support to Devil May Cry HD Collection.<br />
 As of (21/10/23) it is still in testing and a public release build should be up in the next few days.
 
 ## Features
