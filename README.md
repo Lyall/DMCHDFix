@@ -5,7 +5,10 @@
 This is a fix that aims to add ultrawide support to Devil May Cry HD Collection.
 
 ## Features
-- Removes pillarboxing/letterboxing.
+- Unlocks 1080p resolution limit in the launcher.
+- Corrects gameplay aspect ratio.
+- Scales HUD to 16:9.
+- Correctly scales movies to 16:9.
 
 ## Installation
 - Grab the latest release of DMCHDFix from [here.](https://github.com/Lyall/DMCHDFix/releases)
