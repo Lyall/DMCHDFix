@@ -31,7 +31,7 @@ This list will likely contain minor bugs which may or may not be fixed.
 - Door opening zoom effect looks janky.
 - Cutscene letterbox does not span screen.
 - Cutscenes with certain screen effects are scaled incorrectly. (Thanks Mechanical Paladin!)
-- Death screen overlay is not span screen. (Thanks Mechanical Paladin!)
+- Death screen overlay does not span screen. (Thanks Mechanical Paladin!)
 - Aspect ratio is incorrect underwater. (Thanks Mechanical Paladin!)
 
 ### DMC 2
