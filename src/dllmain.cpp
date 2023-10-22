@@ -38,7 +38,7 @@ string sExeName;
 string sGameName;
 string sExePath;
 string sGameVersion;
-string sFixVer = "0.5";
+string sFixVer = "0.7";
 
 // DMC 1: Aspect Ratio Hook
 DWORD64 DMC1_AspectRatioReturnJMP;
@@ -110,6 +110,22 @@ void __declspec(naked) DMC3_TextWidth_CC()
         addss xmm0, xmm5
         mulss xmm2, xmm4
         jmp[DMC3_TextWidthReturnJMP]
+    }
+}
+
+// DMC 3: Combo Meter
+DWORD64 DMC3_ComboMeterReturnJMP;
+float fDMC3_ComboMeterValue;
+void __declspec(naked) DMC3_ComboMeter_CC()
+{
+    __asm
+    {
+        mov r9d, 0x00FFFFF1
+        divss xmm3, [fAspectMultiplier]
+        subss xmm0, xmm4
+        cvttss2si rax, xmm3
+        cvttss2si edx, xmm0
+        jmp[DMC3_ComboMeterReturnJMP]
     }
 }
 
@@ -321,6 +337,16 @@ void ResolutionCheck()
             DWORD64 DMC1_CurrResolutionValues = Memory::GetAbsolute(DMC1_CurrResolutionAddress + 0x9);
             iResX = *reinterpret_cast<short*>(DMC1_CurrResolutionValues);
             iResY = *reinterpret_cast<short*>(DMC1_CurrResolutionValues + 0x2);
+            if (iResX == 0 || iResY == 0)
+            {
+                LOG_F(INFO, "DMC 1: Current Resolution: Failed to read resolution. Try increasing the injection delay.");
+                // Grab desktop resolution
+                RECT desktop;
+                GetWindowRect(GetDesktopWindow(), &desktop);
+                iResX = desktop.right;
+                iResY = desktop.bottom;
+                LOG_F(INFO, "DMC 1: Current Resolution: Using desktop resolution instead.");
+            }
             LOG_F(INFO, "DMC 1: Current Resolution: Resolution is %dx%d", iResX, iResY);
 
             // Calculate DMC1 values
@@ -352,6 +378,16 @@ void ResolutionCheck()
             DWORD64 DMC2_CurrResolutionValues = Memory::GetAbsolute(DMC2_CurrResolutionAddress + 0x7);
             iResX = *reinterpret_cast<short*>(DMC2_CurrResolutionValues + 0x90);
             iResY = *reinterpret_cast<short*>(DMC2_CurrResolutionValues + 0x92);
+            if (iResX == 0 || iResY == 0)
+            {
+                LOG_F(INFO, "DMC 2: Current Resolution: Failed to read resolution. Try increasing the injection delay.");
+                // Grab desktop resolution
+                RECT desktop;
+                GetWindowRect(GetDesktopWindow(), &desktop);
+                iResX = desktop.right;
+                iResY = desktop.bottom;
+                LOG_F(INFO, "DMC 2: Current Resolution: Using desktop resolution instead.");
+            }
             LOG_F(INFO, "DMC 2: Current Resolution: Resolution is %dx%d", iResX, iResY);
 
             // Calculate DMC2 values
@@ -383,6 +419,16 @@ void ResolutionCheck()
             DWORD64 DMC3_CurrResolutionValues = Memory::GetAbsolute(DMC3_CurrResolutionAddress + 0x2);
             iResX = *reinterpret_cast<short*>(DMC3_CurrResolutionValues + 0x4);
             iResY = *reinterpret_cast<short*>(DMC3_CurrResolutionValues + 0x8);
+            if (iResX == 0 || iResY == 0)
+            {
+                LOG_F(INFO, "DMC 3: Current Resolution: Failed to read resolution. Try increasing the injection delay.");
+                // Grab desktop resolution
+                RECT desktop;
+                GetWindowRect(GetDesktopWindow(), &desktop);
+                iResX = desktop.right;
+                iResY = desktop.bottom;
+                LOG_F(INFO, "DMC 3: Current Resolution: Using desktop resolution instead.");
+            }
             LOG_F(INFO, "DMC 3: Current Resolution: Resolution is %dx%d", iResX, iResY);
 
             // Calculate DMC3 values
@@ -573,6 +619,26 @@ void HUDFix()
         else if (!DMC3_TextWidthScanResult)
         {
             LOG_F(INFO, "DMC 3: Text Width: Pattern scan failed.");
+        }
+
+        // DMC 3: Combo meter
+        uint8_t* DMC3_ComboMeterScanResult = Memory::PatternScan(baseModule, "41 ?? ?? ?? ?? 00 F3 48 ?? ?? ?? F3 0F ?? ?? 66 ?? ?? ?? ?? E8 ?? ?? ?? ??");
+        if (DMC3_ComboMeterScanResult)
+        {
+            fDMC3_ComboMeterValue = fHUDOffset * (float)0.1125;
+            LOG_F(INFO, "DMC 3: Combo Meter: New combo meter width = %.4f", fDMC3_ComboMeterValue);
+
+            DWORD64 DMC3_ComboMeterAddress = (uintptr_t)DMC3_ComboMeterScanResult;
+            int DMC3_ComboMeterHookLength = Memory::GetHookLength((char*)DMC3_ComboMeterAddress, 13);
+            DMC3_ComboMeterReturnJMP = DMC3_ComboMeterAddress + DMC3_ComboMeterHookLength;
+            Memory::DetourFunction64((void*)DMC3_ComboMeterAddress, DMC3_ComboMeter_CC, DMC3_ComboMeterHookLength);
+
+            LOG_F(INFO, "DMC 3: Combo Meter: Hook length is %d bytes", DMC3_ComboMeterHookLength);
+            LOG_F(INFO, "DMC 3: Combo Meter: Hook address is 0x%" PRIxPTR, (uintptr_t)DMC3_ComboMeterAddress);
+        }
+        else if (!DMC3_ComboMeterScanResult)
+        {
+            LOG_F(INFO, "DMC 3: Combo Meter: Pattern scan failed.");
         }
     }
 }
