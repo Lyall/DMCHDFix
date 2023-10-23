@@ -25,10 +25,14 @@ This list will likely contain minor bugs which may or may not be fixed.
 ### Launcher
 - Some text is not scaled correctly.
 - HUD scale does not update with resolution changes.
+- Attract FMV is not scaled correctly. (Thanks Mechanical Paladin!)
 
 ### DMC 1
 - Door opening zoom effect looks janky.
 - Cutscene letterbox does not span screen.
+- Cutscenes with certain screen effects are scaled incorrectly. (Thanks Mechanical Paladin!)
+- Death screen overlay does not span screen. (Thanks Mechanical Paladin!)
+- Aspect ratio is incorrect underwater. (Thanks Mechanical Paladin!)
 
 ### DMC 2
 - Targeting reticle is squished (wrong aspect ratio).
@@ -37,6 +41,7 @@ This list will likely contain minor bugs which may or may not be fixed.
 - Targeting reticle is misaligned.
 - Combo meter is misaligned.
 - Object pop-in towards the edge of the screen.
+- Main menu is not scaled correctly on first boot.
 
 ## Screenshots
 
