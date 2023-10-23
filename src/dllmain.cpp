@@ -38,7 +38,7 @@ string sExeName;
 string sGameName;
 string sExePath;
 string sGameVersion;
-string sFixVer = "0.7";
+string sFixVer = "0.8";
 
 // DMC 1: Aspect Ratio Hook
 DWORD64 DMC1_AspectRatioReturnJMP;
@@ -509,7 +509,27 @@ void AspectFOVFix()
         {
             LOG_F(INFO, "DMC 3: Aspect Ratio: Pattern scan failed.");
         }
-    }
+
+        // DMC 3: Pop-in fix.
+        uint8_t* DMC3_CullingScanResult = Memory::PatternScan(baseModule, "0F ?? ?? F3 0F ?? ?? ?? ?? ?? ?? ?? 01 C7 ?? ?? ?? 00 00 80 3F");
+        if (DMC3_CullingScanResult)
+        {
+            DWORD64 DMC3_CullingAddress = (uintptr_t)DMC3_CullingScanResult + 0x3;
+            LOG_F(INFO, "DMC 3: Object Culling: Address is 0x%" PRIxPTR, (uintptr_t)DMC3_CullingAddress);
+            DWORD64 DMC3_CullingValue = Memory::GetAbsolute(DMC3_CullingAddress + 0x4);
+            LOG_F(INFO, "DMC 3: Object Culling: Value address is 0x%" PRIxPTR, (uintptr_t)DMC3_CullingValue);
+
+            float fDMC3_DefaultCullingValue = *reinterpret_cast<float*>(DMC3_CullingValue);
+            LOG_F(INFO, "DMC 3: Object Culling: Default culling value =  %.8f.", fDMC3_DefaultHUDWidth);
+            float fDMC3_NewCullingValue = (float)(fDMC3_DefaultHUDWidth * fAspectMultiplier) + 0.1; // Add some wiggle
+            Memory::Write(DMC3_CullingValue, fDMC3_NewCullingValue);
+            LOG_F(INFO, "DMC 3: Object Culling: New culling value = %.8f.", fDMC3_NewCullingValue);
+        }
+        else if (!DMC3_CullingScanResult)
+        {
+            LOG_F(INFO, "DMC 3: Object Culling: Pattern scan failed.");
+        }
+    }   
 }
 
 void HUDFix()
@@ -554,6 +574,7 @@ void HUDFix()
             float fDMC1_DefaultHUDWidth = *reinterpret_cast<float*>(DMC1_HUDWidthValue);
             LOG_F(INFO, "DMC 1: HUD Width: Default HUD width =  %.8f.", fDMC1_DefaultHUDWidth);
             float fDMC1_NewHUDWidth = fDMC1_DefaultHUDWidth / fAspectMultiplier;
+            
             Memory::Write(DMC1_HUDWidthValue, fDMC1_NewHUDWidth);
             LOG_F(INFO, "DMC 1: HUD Width: New HUD width = %.8f.", fDMC1_NewHUDWidth);
         }
