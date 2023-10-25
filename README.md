@@ -13,7 +13,7 @@ As of (21/10/23) it is still in testing and a public release build should be up 
 
 ## Installation
 - Grab the latest release of DMCHDFix from [here.](https://github.com/Lyall/DMCHDFix/releases)
-- Extract the contents of the release zip in to the the Win64 folder.<br />(e.g. "**steamapps\common\Devil May Cry HD Collection**" for Steam).
+- Extract the contents of the release zip in to the the game folder.<br />(e.g. "**steamapps\common\Devil May Cry HD Collection**" for Steam).
 
 ## Configuration
 - See **DMCHDFix.ini** to adjust settings for the fix.
