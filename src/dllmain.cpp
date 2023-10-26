@@ -123,6 +123,7 @@ void __declspec(naked) DMC3_ComboMeter_CC()
         mov r9d, 0x00FFFFF1
         divss xmm3, [fAspectMultiplier]
         subss xmm0, xmm4
+        subss xmm0, [fDMC3_ComboMeterValue]
         cvttss2si rax, xmm3
         cvttss2si edx, xmm0
         jmp[DMC3_ComboMeterReturnJMP]
@@ -209,25 +210,6 @@ void ReadConfig()
     inipp::get_value(ini.sections["Fix FMVs"], "Enabled", bMovieFix);
     iMovieFix = (int)bMovieFix;
 
-    // Custom resolution
-    if (iCustomResX > 0 && iCustomResY > 0)
-    {
-        fNewX = (float)iCustomResX;
-        fNewY = (float)iCustomResY;
-        fNewAspect = (float)iCustomResX / (float)iCustomResY;
-    }
-    else
-    {
-        // Grab desktop resolution
-        RECT desktop;
-        GetWindowRect(GetDesktopWindow(), &desktop);
-        fNewX = (float)desktop.right;
-        fNewY = (float)desktop.bottom;
-        iCustomResX = (int)desktop.right;
-        iCustomResY = (int)desktop.bottom;
-        fNewAspect = (float)desktop.right / (float)desktop.bottom;
-    }
-
     // Log config parse
     LOG_F(INFO, "Config Parse: iInjectionDelay: %dms", iInjectionDelay);
     LOG_F(INFO, "Config Parse: bResUnlock: %d", bResUnlock);
@@ -245,7 +227,6 @@ void DetectGame()
     sExePath = string(exePathWString.begin(), exePathWString.end());
     sExeName = sExePath.substr(sExePath.find_last_of("/\\") + 1);
 
-    string sdmc1 = string("dmcLauncher.exe");
     LOG_F(INFO, "Game Name: %s", sExeName.c_str());
     LOG_F(INFO, "Game Path: %s", sExePath.c_str());
 
@@ -521,7 +502,7 @@ void AspectFOVFix()
 
             float fDMC3_DefaultCullingValue = *reinterpret_cast<float*>(DMC3_CullingValue);
             LOG_F(INFO, "DMC 3: Object Culling: Default culling value =  %.8f.", fDMC3_DefaultHUDWidth);
-            float fDMC3_NewCullingValue = (float)(fDMC3_DefaultHUDWidth * fAspectMultiplier) + 0.1; // Add some wiggle
+            float fDMC3_NewCullingValue = (float)(fDMC3_DefaultHUDWidth * fAspectMultiplier) + 0.125; // Add some wiggle
             Memory::Write(DMC3_CullingValue, fDMC3_NewCullingValue);
             LOG_F(INFO, "DMC 3: Object Culling: New culling value = %.8f.", fDMC3_NewCullingValue);
         }
@@ -563,7 +544,7 @@ void HUDFix()
     else if (sExeName == "dmc1.exe" && bHUDFix)
     {
         // DMC 1: HUD width
-        uint8_t* DMC1_HUDWidthScanResult = Memory::PatternScan(baseModule, "0F 29 ?? ?? ?? F3 0F ?? ?? ?? ?? ?? ?? F3 0F ?? ?? ?? ?? F3 0F ?? ?? ?? ?? ?? ?? 44 0F ?? ?? ?? ??");
+        /*uint8_t* DMC1_HUDWidthScanResult = Memory::PatternScan(baseModule, "0F 29 ?? ?? ?? F3 0F ?? ?? ?? ?? ?? ?? F3 0F ?? ?? ?? ?? F3 0F ?? ?? ?? ?? ?? ?? 44 0F ?? ?? ?? ??");
         if (DMC1_HUDWidthScanResult)
         {
             DWORD64 DMC1_HUDWidthAddress = (uintptr_t)DMC1_HUDWidthScanResult + 0x9;
@@ -581,7 +562,7 @@ void HUDFix()
         else if (!DMC1_HUDWidthScanResult)
         {
             LOG_F(INFO, "DMC 1: HUD Width: Pattern scan failed.");
-        }
+        }*/
     }
     else if (sExeName == "dmc2.exe" && bHUDFix)
     {
@@ -646,7 +627,8 @@ void HUDFix()
         uint8_t* DMC3_ComboMeterScanResult = Memory::PatternScan(baseModule, "41 ?? ?? ?? ?? 00 F3 48 ?? ?? ?? F3 0F ?? ?? 66 ?? ?? ?? ?? E8 ?? ?? ?? ??");
         if (DMC3_ComboMeterScanResult)
         {
-            fDMC3_ComboMeterValue = fHUDOffset * (float)0.1125;
+            // TODO: This formula is not correct.
+            fDMC3_ComboMeterValue = (float)((fHUDOffset * fAspectDivisional) / 2) - 30;
             LOG_F(INFO, "DMC 3: Combo Meter: New combo meter width = %.4f", fDMC3_ComboMeterValue);
 
             DWORD64 DMC3_ComboMeterAddress = (uintptr_t)DMC3_ComboMeterScanResult;
