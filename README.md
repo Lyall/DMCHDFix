@@ -2,8 +2,7 @@
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/W7W01UAI9)</br>
 [![Github All Releases](https://img.shields.io/github/downloads/Lyall/DMCHDFix/total.svg)](https://github.com/Lyall/DMCHDFix/releases)
 
-This is a work-in-progress fix that aims to add ultrawide support to Devil May Cry HD Collection.<br />
-As of (21/10/23) it is still in testing and a public release build should be up in the next few days.
+This is a **work-in-progress** fix that aims to add ultrawide support to Devil May Cry HD Collection.<br />
 
 ## Features
 - Unlocks 1080p resolution limit in the launcher.
@@ -20,10 +19,10 @@ As of (21/10/23) it is still in testing and a public release build should be up 
 
 ## Known Issues
 Please report any issues you see.
-This list will likely contain minor bugs which may or may not be fixed.
+This list will likely contain bugs which may or may not be fixed.
 
 ### Launcher
-- Some text is not scaled correctly.
+- Several parts of the HUD (some text, selection markers etc) are not scaled correctly.
 - HUD scale does not update with resolution changes.
 - Attract FMV is not scaled correctly. (Thanks Mechanical Paladin!)
 
