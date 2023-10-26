@@ -30,6 +30,7 @@ This list will likely contain bugs which may or may not be fixed.
 - HUD is stretched.
 - Some pop-in at screen edges with high aspect ratios.
 - Some alpha effects (red orbs etc) are squished (wrong aspect ratio).
+- Underwater levels may display at wrong aspect ratio. (Thanks Mechanical Paladin!)
 
 ### DMC 2
 - Targeting reticle is squished (wrong aspect ratio).
