@@ -28,11 +28,9 @@ This list will likely contain minor bugs which may or may not be fixed.
 - Attract FMV is not scaled correctly. (Thanks Mechanical Paladin!)
 
 ### DMC 1
-- Door opening zoom effect looks janky.
-- Cutscene letterbox does not span screen.
-- Cutscenes with certain screen effects are scaled incorrectly. (Thanks Mechanical Paladin!)
-- Death screen overlay does not span screen. (Thanks Mechanical Paladin!)
-- Aspect ratio is incorrect underwater. (Thanks Mechanical Paladin!)
+- HUD is stretched.
+- Some pop-in at screen edges with high aspect ratios.
+- Some alpha effects (red orbs etc) are squished (wrong aspect ratio).
 
 ### DMC 2
 - Targeting reticle is squished (wrong aspect ratio).
